@@ -1,5 +1,10 @@
 class Node():
     def __init__(self, state, parent, action):
+        """
+        State - person ID
+        Parent - parent person ID
+        Action - Movie ID
+        """
         self.state = state
         self.parent = parent
         self.action = action

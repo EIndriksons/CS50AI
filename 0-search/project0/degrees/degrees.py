@@ -94,7 +94,7 @@ def shortest_path(source, target):
 
     # Initialize starting parameters
     start = Node(state=source, parent=None, action=None)
-    frontier = StackFrontier()
+    frontier = QueueFrontier()
     frontier.add(start)
 
     # Initialize empty explored set
@@ -110,19 +110,9 @@ def shortest_path(source, target):
         # Choose a node from the frontier
         node = frontier.remove()
 
-        # If node is the goal, then we have a solution
-        if node.state == target:
-            
-            solution = []
-
-            # Looping through all of the nodes
-            while node.parent is not None:
-                solution.append((node.action, node.state))
-                node = node.parent
-
-            # Reverse because we start from the end
-            solution.reverse()
-
+        # Check for a solution
+        solution = solutions(node, target)
+        if solution:
             return solution
 
         # Mark node as explored
@@ -132,7 +122,39 @@ def shortest_path(source, target):
         for action, state in neighbors_for_person(node.state):
             if not frontier.contains_state(state) and state not in explored:
                 child = Node(state=state, parent=node, action=action)
+
+                # Check if the new node we add to the frontier is already the solution
+                solution = solutions(child, target)
+                if solution:
+                    return solution
+
                 frontier.add(child)
+
+
+def solutions(node, target):
+    """
+    Checks for the solution
+    If one available, returns it as a list of tuples where [(movie, actor), (movie, actor), ...]
+    Else returns an empty list []
+    """
+    solution = []
+
+    # If node is the goal, then we have a solution
+    if node.state == target:
+        
+        # Looping through all of the parent nodes
+        while node.parent is not None:
+            solution.append((node.action, node.state))
+            node = node.parent
+
+        # Reverse the list because we started from the end
+        solution.reverse()
+
+        return solution
+
+    # Otherwise return empty solution list
+    else:
+        return solution
 
 
 def person_id_for_name(name):

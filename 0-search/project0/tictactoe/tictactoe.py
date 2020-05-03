@@ -3,6 +3,7 @@ Tic Tac Toe Player
 """
 
 import math
+from helpers import is_winner
 
 X = "X"
 O = "O"
@@ -66,7 +67,12 @@ def winner(board):
     """
     Returns the winner of the game, if there is one.
     """
-    raise NotImplementedError
+    if is_winner(board, "X"):
+        return "X"
+    elif is_winner(board, "O"):
+        return "O"
+    else:
+        return None
 
 
 def terminal(board):

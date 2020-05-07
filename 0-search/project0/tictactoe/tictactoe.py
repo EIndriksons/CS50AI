@@ -121,6 +121,10 @@ def minimax(board):
 
     optimal_action = None
 
+    # Variables for alpha-beta pruning
+    alpha = -math.inf
+    beta = math.inf
+
     # Checks whose player turn it is
     if player(board) == "X":
 
@@ -132,7 +136,7 @@ def minimax(board):
 
             # We calculate the value of the action by invoking a recursive formula
             # which explores all possible future actions
-            value_action = min_value(result(board, action))
+            value_action = min_value(result(board, action), alpha, beta)
 
             # Then we acquire the most optimal solution
             if value_action > value:
@@ -149,7 +153,7 @@ def minimax(board):
 
             # We calculate the value of the action by invoking a recursive formula
             # which explores all possible future actions
-            value_action = max_value(result(board, action))
+            value_action = max_value(result(board, action), alpha, beta)
 
             # Then we acquire the most optimal solution
             if value_action < value:
@@ -159,7 +163,7 @@ def minimax(board):
     return optimal_action
 
 
-def min_value(board):
+def min_value(board, alpha, beta):
 
     # Check if the game is over
     if terminal(board):
@@ -171,12 +175,18 @@ def min_value(board):
     # We calculate the value of the action by invoking a recursive formula
     # which explores all possible future actions
     for action in actions(board):
-        value = min(value, max_value(result(board, action)))
+        value = min(value, max_value(result(board, action), alpha, beta))
+
+        # If alpha is higher then beta then there is no point in continuing
+        # Because no other value can beat this score
+        beta = min(value, beta)
+        if alpha > beta:
+            break
 
     return value
 
 
-def max_value(board):
+def max_value(board, alpha, beta):
 
     # Check if the game is over
     if terminal(board):
@@ -188,6 +198,12 @@ def max_value(board):
     # We calculate the value of the action by invoking a recursive formula
     # which explores all possible future actions
     for action in actions(board):
-        value = max(value, min_value(result(board, action)))
+        value = max(value, min_value(result(board, action), alpha, beta))
+
+        # If alpha is higher then beta then there is no point in continuing
+        # Because no other value can beat this score
+        alpha = max(value, alpha)
+        if alpha > beta:
+            break
 
     return value

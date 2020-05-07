@@ -3,6 +3,7 @@ Tic Tac Toe Player
 """
 
 import math
+from copy import deepcopy
 from helpers import is_winner
 
 X = "X"
@@ -60,7 +61,21 @@ def result(board, action):
     """
     Returns the board that results from making move (i, j) on the board.
     """
-    raise NotImplementedError
+    i, j = action
+
+    # Check for if the action is valid (i.e. the action cell is empty)
+    if board[i][j] != EMPTY:
+        raise NameError('Not a Valid Action!')
+
+    # Check whose player's turn it is
+    current_player = player(board)
+
+    # Deep copy a board as we shouldn't change the original board as it will be used in Minimax
+    boardcopy = deepcopy(board)
+
+    # Update the copy of the board
+    boardcopy[i][j] = current_player
+    return boardcopy
 
 
 def winner(board):
@@ -101,4 +116,9 @@ def minimax(board):
     """
     Returns the optimal action for the current player on the board.
     """
+    if terminal(board):
+        return None
+
     raise NotImplementedError
+
+    

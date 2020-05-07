@@ -4,7 +4,7 @@ Tic Tac Toe Player
 
 import math
 from copy import deepcopy
-from helpers import is_winner, min_value, max_value
+from helpers import is_winner
 
 X = "X"
 O = "O"
@@ -49,10 +49,10 @@ def actions(board):
     actions = set()
 
     # Iterate through the board and count all EMPTY fields
-    for row in board:
-        for cell in row:
+    for i, row in enumerate(board):
+        for j, cell in enumerate(row):
             if cell == EMPTY:
-                actions.add((row, cell))
+                actions.add((i, j))
 
     return actions
 
@@ -152,8 +152,42 @@ def minimax(board):
             value_action = max_value(result(board, action))
 
             # Then we acquire the most optimal solution
-            if value_action > value:
+            if value_action < value:
                 value = value_action
                 optimal_action = action
-    
+
     return optimal_action
+
+
+def min_value(board):
+
+    # Check if the game is over
+    if terminal(board):
+        return utility(board)
+
+    # For Min Value we want starting value to be positive infinity
+    value = math.inf
+
+    # We calculate the value of the action by invoking a recursive formula
+    # which explores all possible future actions
+    for action in actions(board):
+        value = min(value, max_value(result(board, action)))
+
+    return value
+
+
+def max_value(board):
+
+    # Check if the game is over
+    if terminal(board):
+        return utility(board)
+
+    # For Max Value we want starting value to be negative infinity
+    value = -math.inf
+
+    # We calculate the value of the action by invoking a recursive formula
+    # which explores all possible future actions
+    for action in actions(board):
+        value = max(value, min_value(result(board, action)))
+
+    return value

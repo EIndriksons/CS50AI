@@ -8,3 +8,5 @@ If you are a student of this course - please see the Course guidelines on [Acade
 - [Week 0 - Search:](/0-search) - Uninformed Search algorithms (Depth-First Search, Breadth-First Search), Informed Search algorithms (Greedy Best-First Search, A* Search), Adversarial Search Algorithms (Minimax, Alpha-Beta Pruning, Depth-Limited Minimax and Evaluation Functions).
   * [Lecture](/0-search/lecture)
   * [Project](/0-search/project0)
+    + [Degrees](/0-search/project0/degrees) - Implement Six Degrees of Kevin Bacon game using Depth-First Search and Breadth-First Search.
+    + [Tic-Tac-Toe](/0-search/project0/tictactoe) - Implement functionality and AI for a graphical game of Tic-Tac-Toe using Minimax algorithm with Alpha-Beta Pruning.

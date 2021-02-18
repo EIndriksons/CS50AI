@@ -1,3 +1,29 @@
+### Terminology:
+- **Agent** - an entity that perceives its environment and acts upon that environment (ex. a car that is trying to get to a destination or the player who is trying to solve a puzzle).
+- **State** - a configuration of the agent and its environment (ex. in chess it is the chessboard and how all the pieces are arranged). Each of the states can require different solutions to get to the goal.
+    * **Initial State** - the state in which the agent begins. Starting point. This is where we try to figure out what actions to apply to get from the initial state to the goal.
+- **Actions** - choices that can be made in any given state. Usually defined by function `actions(s)` which returns the set of actions that can be executed in state `s`. (ex. in Tic Tac Toe it's all possible moves you can make as player X in that turn).
+- **Transition Model** - a description of what state results from performing any applicable action in any state. Usually defined by function `result(s, a)` which returns the state resulting from performing action `a` in state `s`.
+- **State Space** - by using the transition model we can acquire the set of all states reachable from the initial state by any sequence of actions.
+- **Goal Test** - way to determine whether a given state is a goal state (ex. in driving directions if the agent is in the destination you typed in the goal is achieved).
+- **Path Cost** - the numerical cost associated with a given path (ex. in driving directions - time, distance, etc.). Interpretation - some number how expensive it is to take this path. The goal is to find the path that minimizes the path cost.
+- **Solution** - a sequence of actions that leads from the initial state to a goal state.
+    * **Optimal Solution** - a solution that has the lowest path cost among all solutions.
+- **Node** - a data structure that keeps track of:
+    * a state
+    * a parent (node that generated this node). Will allow us to get the solution (sequence of actions that got us here).
+    * an action (action applied to the parent to get to this node)
+    * a path cost (from the initial state to node)
+- **Frontier** - represents all of the states that we can explore next.
+
+### The general approach:
+1. Start with a frontier that contains the initial state.
+2. Repeat/Loop:
+    * If the frontier is empty, then there is no solution.
+    * Remove a node from the frontier.
+    * If the node contains a goal state (by using goal test), return the solution.
+    * Expand node (consider all possible actions and what nodes can you get to from this one), add resulting nodes to the frontier.
+
 ## Search Algorithms
 
 - **Uninformed Search algorithms** - Search strategy that uses no problem-specific knowledge.
@@ -9,7 +35,7 @@
         * Optimal if *h(n)* is admissible - never overestimates the true cost.
         * Optimal if *h(n)* is consistent - for every node *n* and successor *n'* with step cost *c, h(n) <= h(n') + c*.
 
-In the lecture, example heuristic function *h(n)* was calculated using **Manhattan distance** which is the distance between two points measured along axes at right angles.
+In the lecture, the example heuristic function *h(n)* was calculated using **Manhattan distance** which is the distance between two points measured along axes at right angles.
 
 ## Adversarial Search Algorithms
 

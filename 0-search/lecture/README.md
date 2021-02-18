@@ -18,11 +18,13 @@
 
 ### The general approach:
 1. Start with a frontier that contains the initial state.
-2. Repeat/Loop:
+2. Start with an empty explored set.
+3. Repeat/Loop:
     * If the frontier is empty, then there is no solution.
     * Remove a node from the frontier.
     * If the node contains a goal state (by using goal test), return the solution.
-    * Expand node (consider all possible actions and what nodes can you get to from this one), add resulting nodes to the frontier.
+    * Add the node to the explored set.
+    * Expand node (consider all possible actions and what nodes can you get to from this one), add resulting nodes to the frontier if they aren't already in the frontier or the explored set.
 
 ## Search Algorithms
 

@@ -1,0 +1,138 @@
+## Knowledge
+Humans reason based on existing knowledge and draw conclusions from it. The concept of representing knowledge and drawing conclusions from it is also used in AI.
+
+**Consider example:**
+```
+1. If it didn’t rain, Harry visited Hagrid today.
+2. Harry visited Hagrid or Dumbledore today, but not both.
+3. Harry visited Dumbledore today.
+```
+
+Based on these three sentences, we can answer the question “did it rain today?”, even though none of the individual sentences tells us anything about whether it is raining today. We know that Harry visited Dumbledore. We also know that Harry visited either Dumbledore or Hagrid, and thus we can conclude:
+
+```
+4. Harry did not visit Hagrid.
+```
+
+Now, looking at sentence 1, we understand that if it didn’t rain, Harry would have visited Hagrid. However, knowing sentence 4, we know that this is not the case. Therefore, we can conclude:
+
+```
+5. It rained today.
+```
+
+#### Terminology:
+- **Knowledge-Based Agents** - Agent that reasons by operating on the internal representation of knowledge.
+- **Sentence** - An assertion about the world in a knowledge representation language. A sentence is how AI stores knowledge and uses it to infer new information.
+- **Propositional Symbols** - Most often letters (P, Q, R) are used to represent a proposition.
+
+## Propositional Logic
+Propositional logic is based on propositions, statements about the world that can be either **true** or **false**.
+
+### Logical Connectives:
+- **Not (¬)** inverses the truth value of the proposition. *Ex. if P: “It is raining,” then ¬P: “It is not raining”.*
+- **And (∧)** connects two different propositions. When these two propositions, P and Q, are connected by ∧, the resulting proposition P ∧ Q is true only in the case that both P and Q are true.
+- **Or (∨)** is true as long as either of its arguments is true. This means that for P ∨ Q to be true, at least one P or Q has to be true.
+- **Implication (→)** represents a structure of “if P then Q.” *Ex. if P: “It is raining” and Q: “I’m indoors”, then P → Q means “If it is raining, then I’m indoors.” In the case of P implies Q (P → Q), P is called the antecedent, and Q is called the consequent.*
+- **Biconditional (↔)** is an implication that goes both directions. You can read it as “if and only if.” P ↔ Q is the same as P → Q and Q → P has taken together. *Ex. if P: “It is raining.” and Q: “I’m indoors,” then P ↔ Q means that “If it is raining, then I’m indoors,” and “if I’m indoors, then it is raining.” This means that we can infer more than we could with a simple implication. If P is false, then Q is also false; if it is not raining, we know that I’m also not indoors.*
+
+### Model
+The model is an assignment of a truth value to every proposition. To reiterate, propositions are statements about the world that can be either true or false. However, knowledge about the world is represented in the truth values of these propositions. The model is the truth-value assignment that provides information about the world.
+
+*For example, if P: “It is raining.” and Q: “It is Tuesday.”, a model could be the following truth-value assignment: {P = True, Q = False}. This model means that it is raining, but it is not Tuesday. However, there are more possible models in this situation (for example, {P = True, Q = True}, where it is both raining an a Tuesday). In fact, the number of possible models is 2 to the power of the number of propositions. In this case, we had 2 propositions, so 2²=4 possible models.*
+
+### Knowledge Base (KB)
+The knowledge base is a set of sentences known by a knowledge-based agent. This is the knowledge that the AI is provided about the world in the form of propositional logic sentences that can be used to make additional inferences about the world.
+
+### Entailment (⊨)
+If α ⊨ β (α entails β), then in any world where α is true, β is true, too.
+
+*For example, if α: “It is a Tuesday in January” and β: “It is a Tuesday,” then we know that α ⊨ β. If it is true that it is a Tuesday in January, we also know that it is a Tuesday. Entailment is different from implication. The implication is a logical connection between two propositions. Entailment, on the other hand, is a relationship that means that if all the information in α is true, then all the information in β is true.*
+
+## Inference
+Inference is the process of deriving new sentences from old ones.
+
+For instance, in the Harry Potter example earlier, sentences 4 and 5 were inferred from sentences 1, 2, and 3.
+
+There are multiple ways to infer new knowledge based on existing knowledge. First, we will consider the **Model Checking algorithm**. To determine if KB ⊨ α (in other words, answering the question: “can we conclude that α is true based on our knowledge base”):
+- Enumerate all possible models.
+- If in every model where KB is true, α is true as well, then KB entails α (KB ⊨ α).
+
+*For example, P: It is a Tuesday. Q: It is raining. R: Harry will go for a run. KB: (P ∧ ¬Q) → R (in words, P and not Q imply R) P (P is true) ¬Q (Q is false) Query: R (We want to know whether R is true or false; Does KB ⊨ R?)*
+
+To answer the query using the Model Checking algorithm, we enumerate all possible models. Then, we go through every model and check whether it is true given our Knowledge Base. First, in our KB, we know that P is true. Thus, we can say that the KB is false in all models where P is not true. Next, similarly, in our KB, we know that Q is false. Thus, we can say that the KB is false in all models where Q is true. Finally, we are left with two models. In both, P is true and Q is false. In one model R is true and in the other R is false. Due to (P ∧ ¬Q) → R being in our KB, we know that in the case where P is true and Q is false, R must be true. Thus, we say that our KB is false for the model where R is false, and true for the model where R is true.
+
+```
+| P     | Q     | R     | KB    |
+|-------|-------|-------|-------|
+| false | false | false | false |
+| false | false | true  | false |
+| false | true  | false | false |
+| false | true  | true  | false |
+| true  | false | false | false |
+| true  | false | true  | true  |
+| true  | true  | false | false |
+| true  | true  | true  | false |
+```
+
+Looking at this table, there is only one model where our knowledge base is true. In this model, we see that R is also true. By our definition of entailment, if R is true in all models where the KB is true, then KB ⊨ R.
+
+### In Code...
+```py
+from logic import *
+
+# Create new classes, each having a name, or a symbol, representing each proposition.
+rain = Symbol("rain")  # It is raining.
+hagrid = Symbol("hagrid")  # Harry visited Hagrid
+dumbledore = Symbol("dumbledore")  # Harry visited Dumbledore
+
+# Save sentences into the KB
+knowledge = And(  # Starting from the "And" logical connective, becasue each proposition represents knowledge that we know to be true.
+
+  Implication(Not(rain), hagrid),  # ¬(It is raining) → (Harry visited Hagrid)
+
+  Or(hagrid, dumbledore),  # (Harry visited Hagrid) ∨ (Harry visited Dumbledore).
+
+  Not(And(hagrid, dumbledore)),  # ¬(Harry visited Hagrid ∧ Harry visited Dumbledore) i.e. Harry did not visit both Hagrid and Dumbledore.
+
+  dumbledore  # Harry visited Dumbledore. Note that while previous propositions contained multiple symbols with connectors, this is a proposition consisting of one symbol. This means that we take as a fact that, in this KB, Harry visited Dumbledore.
+)
+```
+
+To run the Model Checking algorithm, the following information is needed:
+- Knowledge Base, which will be used to draw inferences
+- A query, or the proposition that we are interested in whether it is entailed by the KB
+- Symbols, a list of all the symbols (or atomic propositions) used (in our case, these are `rain`, `hagrid`, and `dumbledore`)
+- Model, an assignment of truth and false values to symbols
+
+The model checking algorithm looks as follows:
+```py
+def check_all(knowledge, query, symbols, model):
+
+  # If model has an assignment for each symbol
+  # (The logic below might be a little confusing: we start with a list of symbols. The function is recursive, and every time it calls itself it pops one symbol from the symbols list and generates models from it. Thus, when the symbols list is empty, we know that we finished generating models with every possible truth assignment of symbols.)
+  if not symbols:
+
+    # If knowledge base is true in model, then query must also be true
+    if knowledge.evaluate(model):
+        return query.evaluate(model)
+    return True
+  else:
+
+    # Choose one of the remaining unused symbols
+    remaining = symbols.copy()
+    p = remaining.pop()
+
+    # Create a model where the symbol is true
+    model_true = model.copy()
+    model_true[p] = True
+
+    # Create a model where the symbol is false
+    model_false = mode.copy()
+    model_false[p] = False
+
+    # Ensure entailment holds in both models
+    return(check_all(knowledge, query, remaining, model_true) and check_all(knowledge, query, remaining, model_false))
+```
+
+## Knowledge Engineering
+Knowledge engineering is the process of figuring out how to represent propositions and logic in AI.

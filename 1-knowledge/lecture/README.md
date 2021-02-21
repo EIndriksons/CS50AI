@@ -196,3 +196,33 @@ knowledge = And(
   Not(ballroom)
 )
 ```
+
+## Inference Rules
+Model Checking is not an efficient algorithm. It is not efficient because it has to consider every possible model before giving the answer.
+
+**Inference rules** on the other hand allow us to generate new information based on existing knowledge without considering every possible model.
+
+Inference rules are usually represented using a horizontal bar that separates the top part, the premise, from the bottom part, the conclusion. The premise is whatever knowledge we have, and the conclusion is what knowledge can be generated based on the premise.
+
+```
+If it is raining, then Harry is inside.
+It is raining.
+_______________________________________
+Harry is inside.
+```
+
+There are different types of inference rules:
+- **Modus Ponens** - if we know an implication and its antecedent to be true, then the consequent is true as well.
+    * ![Modus Ponens](img/img1.png)
+- **And Elimination** - If an And proposition is true, then any one atomic proposition within it is true as well. *For example, if we know that Harry is friends with Ron and Hermione, we can conclude that Harry is friends with Hermione.*
+    * ![And Elimination](img/img2.png)
+- **Double Negation Elimination** - A proposition that is negated twice is true. *For example, consider the proposition “It is not true that Harry did not pass the test”. We can parse it the following way: “It is not true that (Harry did not pass the test)”, or “¬(Harry did not pass the test)”, and, finally “¬(¬(Harry passed the test)).” The two negations cancel each other, marking the proposition “Harry passed the test” as true.*
+    * ![Double Negation Elimination](img/img3.png)
+- **Implication Elimination** - An implication is equivalent to an Or relation between the negated antecedent and the consequent. *(As an example, the proposition “If it is raining, Harry is inside” is equivalent to the proposition “(it is not raining) or (Harry is inside).”)*
+    * ![Implication Elimination](img/img4.png)
+- **Biconditional Elimination** - A biconditional proposition is equivalent to an implication and its inverse with an And connective. *For example, “It is raining if and only if Harry is inside” is equivalent to (“If it is raining, Harry is inside” And “If Harry is inside, it is raining”).*
+    * ![Biconditional Elimination](img/img5.png)
+- **De Morgan’s Law** - It is possible to turn an And connective into an Or connective. *Consider the following proposition: “It is not true that both Harry and Ron passed the test.” From this, it is possible to conclude that “It is not true that Harry passed the test” Or “It is not true that Ron passed the test.” That is, for the And proposition earlier to be true, at least one of the propositions in the Or propositions must be true.*
+    * ![De Morgan’s Law](img/img6.png)
+- **Distributive Property** - A proposition with two elements that are grouped with And or Or connectives can be distributed, or broken down into, smaller units consisting of And and Or.
+    * ![Distributive Property](img/img7.png)

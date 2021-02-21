@@ -25,7 +25,7 @@ Now, looking at sentence 1, we understand that if it didn’t rain, Harry would 
 - **Sentence** - An assertion about the world in a knowledge representation language. A sentence is how AI stores knowledge and uses it to infer new information.
 - **Propositional Symbols** - Most often letters (P, Q, R) are used to represent a proposition.
 
-## Propositional Logic
+# Propositional Logic
 Propositional logic is based on propositions, statements about the world that can be either **true** or **false**.
 
 ### Logical Connectives:
@@ -236,3 +236,48 @@ Considering the inference rules (actions) -> Inference can be viewed as a search
 - **Path cost function**: the number of steps in the proof
 
 This shows just how versatile search algorithms are, allowing us to derive new information based on existing knowledge using inference rules.
+
+## Resolution
+Resolution is a powerful inference rule that states that if one of two atomic propositions in an Or proposition is false, the other has to be true.
+
+*For example, given the proposition “Ron is in the Great Hall” Or “Hermione is in the library”, in addition to the proposition “Ron is not in the Great Hall,” we can conclude that “Hermione is in the library.”*
+
+Resolution relies on **Complementary Literals**, two of the same atomic propositions where one is negated and the other is not, such as P and ¬P. Complementary literals allow us to generate new sentences through inferences by resolution. Thus, inference algorithms locate complementary literals to generate new knowledge.
+
+A **Clause** is a disjunction of literals (a propositional symbol or a negation of a propositional symbol, such as P, ¬P). A **disjunction** consists of propositions that are connected with an Or logical connective (P ∨ Q ∨ R). A **conjunction**, on the other hand, consists of propositions that are connected with an And logical connective (P ∧ Q ∧ R). Clauses allow us to convert any logical statement into a **Conjunctive Normal Form (CNF)**, which is a conjunction of clauses, for example: (A ∨ B ∨ C) ∧ (D ∨ ¬E) ∧ (F ∨ G).
+
+ELI5: By doing this conversion of propositions we are essentially changing the form of the propositions to generate new information. This is very useful in the next step of "proof by contradiction" where to determine if KB ⊨ α (True) we actually assume that (KB ∧ ¬α) (that it is False). It's like reverse trying to figure out a logical problem.
+
+### Proof by Contradiction
+Proof by contradiction is a tool used often in computer science. If our knowledge base is true, and it contradicts ¬α, it means that ¬α is false, and, therefore, α must be true. More technically, the algorithm would perform the following actions To determine if KB ⊨ α:
+- Convert (KB ∧ ¬α) to Conjunctive Normal Form.
+- Keep checking to see if we can use resolution to produce a new clause.
+- If we ever produce the empty clause (equivalent to False), congratulations! We have arrived at a contradiction, thus proving that KB ⊨ α.
+- However, if contradiction is not achieved and no more clauses can be inferred, there is no entailment.
+
+# First Order Logic
+First order logic is another type of logic that allows us to express more complex ideas more succinctly than propositional logic.
+
+First order logic uses two types of symbols:
+- Constant Symbols - represent objects.
+- Predicate Symbols - represent relations or functions that take an argument and return a true or false value.
+
+For example, we return to the logic puzzle with different people and house assignments at Hogwarts.
+
+*The constant symbols are people or houses, like Minerva, Pomona, Gryffindor, Hufflepuff, etc. The predicate symbols are properties that hold true or false of some constant symbols. For example, we can express the idea that Minerva is a person using the sentence Person(Minerva). Similarly, we can express the idea the Gryffindor is a house using the sentence House(Gryffindor). All the logical connectives work in first order logic the same way as before. For example, ¬House(Minerva) expresses the idea that Minerva is not a house. A predicate symbol can also take two or more arguments and express a relation between them. For example, BelongsTo expresses a relation between two arguments, the person and the house to which the person belongs. Thus, the idea that Minerva belongs to Gryffindor can be expressed as BelongsTo(Minerva, Gryffindor). First order logic allows having one symbol for each person and one symbol for each house.*
+
+This is more succinct than propositional logic, where each person—house assignment would require a different symbol.
+
+## Universal Quantification
+Quantification is a tool that can be used in first order logic to represent sentences without using a specific constant symbol.
+
+Universal quantification uses the symbol ∀ to express “for all.” *So, for example, the sentence ∀x. BelongsTo(x, Gryffindor) → ¬BelongsTo(x, Hufflepuff) expresses the idea that it is true for every symbol that if this symbol belongs to Gryffindor, it does not belong to Hufflepuff.*
+
+## Existential Quantification
+Existential quantification is an idea parallel to universal quantification. However, while universal quantification was used to create sentences that are true for all x, existential quantification is used to create sentences that are true for at least one x.
+
+It is expressed using the symbol ∃. *For example, the sentence ∃x. House(x) ∧ BelongsTo(Minerva, x) means that there is at least one symbol that is both a house and that Minerva belongs to it. In other words, this expresses the idea that Minerva belongs to a house.*
+
+Existential and universal quantification can be used in the same sentence. *For example, the sentence ∀x. Person(x) → (∃y. House(y) ∧ BelongsTo(x, y)) expresses the idea that if x is a person, then there is at least one house, y, to which this person belongs. In other words, this sentence means that every person belongs to a house.*
+
+There are other types of logic as well, and the commonality between them is that they all exist in pursuit of representing information. These are the systems we use to represent knowledge in our AI.

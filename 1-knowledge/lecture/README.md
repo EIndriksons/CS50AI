@@ -136,3 +136,63 @@ def check_all(knowledge, query, symbols, model):
 
 ## Knowledge Engineering
 Knowledge engineering is the process of figuring out how to represent propositions and logic in AI.
+
+For example, lets take a game of Clue. In the game, a murder was committed by a person, using a tool in a location. *People*, *tools*, and *locations* are represented by cards. One card of each category is picked at random and put in an envelope, and it is up to the participants to uncover whodunnit. Participants do so by uncovering cards and deducing from these clues what must be in the envelope. We will use the Model Checking algorithm from before to uncover the mystery. In our model, we mark as True items that we know are related to the murder and False otherwise.
+
+We can start creating our knowledge base by adding the rules of the game. We know for certain that one person is the murderer, that one tool was used, and that the murder happened in one location. This can be represented in propositional logic the following way:
+
+```py
+# Start with the game conditions: one item in each of the three categories has to be true.
+Or(mustard, plum, scarlet),
+Or(ballroom, kitchen, library),
+Or(knife, revolver, wrench),
+```
+
+The game starts with each player seeing one person, one tool, and one location, thus knowing that they are not related to the murder:
+
+```py
+# Add the information from the three initial cards we saw
+Not(mustard),
+Not(kitchen),
+Not(revolver),
+```
+
+In other situations in the game, one can make a guess, suggesting one combination of person, tool and location. Suppose that the guess is that Scarlet used a wrench to commit the crime in the library. If this guess is wrong, then the following can be deduced and added to the KB:
+
+```py
+# Add the guess someone made that it is Scarlet, who used a wrench in the library
+Or(Not(scarlet), Not(library), Not(wrench)),
+```
+
+Now, suppose someone shows us the Plum card. Thus, we can add Plum to our KB. At this point, we can conclude that the murderer is Scarlet. Adding just one more piece of knowledge, for example, that it is not the ballroom, can give us more information.
+
+```py
+# Add the cards that we were exposed to
+Not(plum),
+Not(ballroom)
+```
+
+And now, using multiple previous pieces of data, we can deduce that Scarlet committed the murder with a knife in the library.
+
+```py
+# Add the clues to the KB
+knowledge = And(
+
+  # Start with the game conditions: one item in each of the three categories has to be true.
+  Or(mustard, plum, scarlet),
+  Or(ballroom, kitchen, library),
+  Or(knife, revolver, wrench),
+
+  # Add the information from the three initial cards we saw
+  Not(mustard),
+  Not(kitchen),
+  Not(revolver),
+
+  # Add the guess someone made that it is Scarlet, who used a wrench in the library
+  Or(Not(scarlet), Not(library), Not(wrench)),
+
+  # Add the cards that we were exposed to
+  Not(plum),
+  Not(ballroom)
+)
+```

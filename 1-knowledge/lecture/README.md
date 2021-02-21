@@ -226,3 +226,13 @@ There are different types of inference rules:
     * ![De Morgan’s Law](img/img6.png)
 - **Distributive Property** - A proposition with two elements that are grouped with And or Or connectives can be distributed, or broken down into, smaller units consisting of And and Or.
     * ![Distributive Property](img/img7.png)
+
+### Knowledge and Search Problems
+Considering the inference rules (actions) -> Inference can be viewed as a search problem with the following properties:
+- **Initial state**: starting knowledge base
+- **Actions**: inference rules
+- **Transition model**: new knowledge base after inference
+- **Goal test**: checking whether the statement that we are trying to prove is in the KB
+- **Path cost function**: the number of steps in the proof
+
+This shows just how versatile search algorithms are, allowing us to derive new information based on existing knowledge using inference rules.

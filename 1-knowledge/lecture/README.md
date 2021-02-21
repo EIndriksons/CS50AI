@@ -259,8 +259,8 @@ Proof by contradiction is a tool used often in computer science. If our knowledg
 First order logic is another type of logic that allows us to express more complex ideas more succinctly than propositional logic.
 
 First order logic uses two types of symbols:
-- Constant Symbols - represent objects.
-- Predicate Symbols - represent relations or functions that take an argument and return a true or false value.
+- **Constant Symbols** - represent objects.
+- **Predicate Symbols** - represent relations or functions that take an argument and return a true or false value.
 
 For example, we return to the logic puzzle with different people and house assignments at Hogwarts.
 
@@ -268,12 +268,12 @@ For example, we return to the logic puzzle with different people and house assig
 
 This is more succinct than propositional logic, where each person—house assignment would require a different symbol.
 
-## Universal Quantification
+### Universal Quantification
 Quantification is a tool that can be used in first order logic to represent sentences without using a specific constant symbol.
 
 Universal quantification uses the symbol ∀ to express “for all.” *So, for example, the sentence ∀x. BelongsTo(x, Gryffindor) → ¬BelongsTo(x, Hufflepuff) expresses the idea that it is true for every symbol that if this symbol belongs to Gryffindor, it does not belong to Hufflepuff.*
 
-## Existential Quantification
+### Existential Quantification
 Existential quantification is an idea parallel to universal quantification. However, while universal quantification was used to create sentences that are true for all x, existential quantification is used to create sentences that are true for at least one x.
 
 It is expressed using the symbol ∃. *For example, the sentence ∃x. House(x) ∧ BelongsTo(Minerva, x) means that there is at least one symbol that is both a house and that Minerva belongs to it. In other words, this expresses the idea that Minerva belongs to a house.*

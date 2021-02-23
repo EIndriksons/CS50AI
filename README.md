@@ -10,3 +10,8 @@ If you are a student of this course - please see the Course guidelines on [Acade
   * [Project](/0-search/project0)
     + [Degrees](/0-search/project0/degrees) - Implement Six Degrees of Kevin Bacon game using Depth-First Search and Breadth-First Search.
     + [Tic-Tac-Toe](/0-search/project0/tictactoe) - Implement functionality and AI for a graphical game of Tic-Tac-Toe using Minimax algorithm with Alpha-Beta Pruning.
+- [Week 1 - Knowledge:](/1-knowledge) - Propositional Logic and First Order Logic, Logical Connectives, Knowledge Bases, Inference and Knowledge Engineering.
+  * [Lecture](/1-knowledge/lecture) - Lecture notes 📒
+  * [Project](/1-knowledge/project1)
+    + [Knights](/1-knowledge/project1/knights) - A solution to “Knights and Knaves” puzzle using Propositional Logic
+    + [Minesweeper](/1-knowledge/project1/minesweeper)

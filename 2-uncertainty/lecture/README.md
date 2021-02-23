@@ -72,3 +72,57 @@ Now we are able to know information about the co-occurrence of the events. For e
 - **Inclusion-Exclusion:** P(a ∨ b) = P(a) + P(b) - P(a ∧ b). This can interpreted in the following way: the worlds in which a or b are true are equal to all the worlds where a is true, plus the worlds where b is true. However, in this case, some worlds are counted twice (the worlds where both a and b are true)). To get rid of this overlap, we subtract once the worlds where both a and b are true (since they were counted twice).
 - **Marginalization:** P(a) = P(a, b) + P(a, ¬b). The idea here is that b and ¬b are disjoint probabilities. That is, the probability of b and ¬b occurring at the same time is 0. We also know b and ¬b sum up to 1. Thus, when a happens, b can either happen or not. When we take the probability of both a and b happening in addition to the probability of a and ¬b, we end up with simply the probability of a
 - **Conditioning:** P(a) = P(a | b)P(b) + P(a | ¬b)P(¬b). This is a similar idea to marginalization. The probability of event a occurring is equal to the probability of a given b times the probability of b, plus the probability of a given ¬b time the probability of ¬b.
+
+## Bayesian Networks
+A Bayesian network is a data structure that represents the dependencies among random variables. Bayesian networks have the following properties:
+- They are directed graphs.
+- Each node on the graph represent a random variable.
+- An arrow from X to Y represents that X is a parent of Y. That is, the probability distribution of Y depends on the value of X.
+- Each node X has probability distribution P(X | Parents(X)).
+
+Let’s consider an example of a Bayesian network that involves variables that affect whether we get to our appointment on time.
+
+![Bayesian Networks](img/img4.png)
+
+Rain is the root node in this network. This means that its probability distribution is not reliant on any prior event. In our example, Rain is a random variable that can take the values {none, light, heavy} with the following probability distribution:
+
+```
+| None | Light | Heavy |
+|------|-------|-------|
+| 0.7  | 0.2   | 0.1   |
+```
+
+Maintenance, in our example, encodes whether there is train track maintenance, taking the values {yes, no}. Rain is a parent node of Maintenance, which means that the probability distribution of Maintenance is affected by Rain.
+
+```
+| Rain/Maintenance | Yes | No  |
+|------------------|-----|-----|
+| None             | 0.4 | 0.6 |
+| Light            | 0.2 | 0.8 |
+| Heavy            | 0.1 | 0.9 |
+```
+
+Train is the variable that encodes whether the train is on time or delayed, taking the values {on time, delayed}. Note that Train has arrows pointing to it from both Maintenance and Rain. This means that both are parents of Train, and their values affect the probability distribution of Train.
+
+```
+| R     | M   | On Time | Delayed |
+|-------|-----|---------|---------|
+| None  | Yes | 0.8     | 0.2     |
+| None  | No  | 0.9     | 0.1     |
+| Light | Yes | 0.6     | 0.4     |
+| Light | No  | 0.7     | 0.3     |
+| Heavy | Yes | 0.4     | 0.6     |
+| Heavy | No  | 0.5     | 0.5     |
+```
+
+
+Appointment is a random variable that represents whether we attend our appointment, taking the values {attend, miss}. Note that its only parent is Train. This point about Bayesian network is noteworthy: parents include only direct relations. It is true that maintenance affects whether the train is on time, and whether the train is on time affects whether we attend the appointment. However, in the end, what directly affects our chances of attending the appointment is whether the train came on time, and this is what is represented in the Bayesian network. For example, if the train came on time, it could be heavy rain and track maintenance, but that has no effect over whether we made it to our appointment.
+
+```
+| T       | Attend | Miss |
+|---------|--------|------|
+| On Time | 0.9    | 0.1  |
+| Delayed | 0.6    | 0.4  |
+```
+
+For example, if we want to find the probability of missing the meeting when the train was delayed on a day with no maintenance and light rain, or P(light, no, delayed, miss), we will compute the following: P(light)P(no | light)P(delayed | light, no)P(miss | delayed). The value of each of the individual probabilities can be found in the probability distributions above, and then these values are multiplied to produce P(no, light, delayed, miss).

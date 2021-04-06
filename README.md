@@ -15,3 +15,17 @@ If you are a student of this course - please see the Course guidelines on [Acade
   * [Project](/1-knowledge/project1)
     + [Knights](/1-knowledge/project1/knights) - A solution to “Knights and Knaves” puzzle using Propositional Logic
     + [Minesweeper](/1-knowledge/project1/minesweeper)
+- [Week 2 - Uncertainty:](/2-uncertainty) - Uncertainty, Probabilities, Bayesian Networks, Sampling, Markov Models and Hidden Markov Models.
+  * [Lecture](/2-uncertainty/lecture) - Lecture notes 📒
+  * [Project](/2-uncertainty/project2)
+    + [PageRank](/2-uncertainty/project2/pagerank) - Not done yet
+    + [Heredity](/2-uncertainty/project2/heredity) - Not done yet
+- [Week 3 - Optimization:](/3-optimization) - Optimization (local search, hill climbing), Simulated Annealing, Linear programming, Constraint satisfaction, Node & Arc consistency, Backtracking search, etc.
+  * [Lecture](/3-optimization/lecture) - Lecture notes 📒
+  * [Project](/3-optimization/project3)
+    + [Crossword](/3-optimization/project3/crossword) - Not done yet
+- [Week 4 - Learning:](/4-learning) - Machine learning (supervised learning, perceptron learning, support vector machines, regressions, loss functions, overfittng, regularization), Sci-kit learn, Reinforcement learning, Markov decisions processes, Q-Learning, Unsupervised learning, k-means clustering, etc.
+  * [Lecture](/4-learning/lecture) - Lecture notes 📒
+  * [Project](/4-learning/project4)
+    + [Shopping](/4-learning/project4/shopping) - Not done yet
+    + [Nim](/4-learning/project4/nim) - Not done yet

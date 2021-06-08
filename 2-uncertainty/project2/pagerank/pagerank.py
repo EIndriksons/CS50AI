@@ -111,7 +111,7 @@ def sample_pagerank(corpus, damping_factor, n):
         sample = random.choices(list(ranking.keys()), list(ranking.values()), k=1)[0]
 
     return ranking
-    
+
 
 def iterate_pagerank(corpus, damping_factor):
     """
@@ -122,7 +122,53 @@ def iterate_pagerank(corpus, damping_factor):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
-    raise NotImplementedError
+
+    threshold = 0.001
+    page_count = len(corpus)
+    
+    # Initiate ranking dict
+    ranking = {}
+    for page in corpus:
+        ranking[page] = 1 / page_count
+
+    # While loop should run up until the change in page rank 
+    # is not higher than the threshold value for all pages
+    repeat = True
+    while repeat:
+
+        i = 0
+        for page in corpus:
+
+            # Calculate the new probability for a page and initiate delta change
+            prob_new = (1 - damping_factor) / page_count
+            prob_delta = 0
+
+            # Surf other pages and determine if the page contains links to current page
+            for key in corpus:
+                if page in corpus[key]:
+
+                    # If the page contains link to the current page adjust prob_delta
+                    link_count = len(corpus[key])
+                    prob_delta = prob_delta + ranking[key] / link_count
+
+            # Adjust prob_delta by damping factor then assign the delta value to the
+            # existing probability measure
+            prob_delta = damping_factor * prob_delta
+            prob_new += prob_delta
+
+            # Calculate if the change is larger than the set threshold value
+            # If so add to the counter to move one step closer to ending the loop
+            if abs(ranking[page] - prob_new) < threshold:
+                i += 1
+
+            # Assign new probability distribution
+            ranking[page] = prob_new
+
+        # If we have met the threshold value page_count of times end the loop
+        if i == page_count:
+            repeat = False
+
+    return ranking
 
 
 if __name__ == "__main__":

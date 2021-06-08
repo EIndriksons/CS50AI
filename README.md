@@ -29,3 +29,12 @@ If you are a student of this course - please see the Course guidelines on [Acade
   * [Project](/4-learning/project4)
     + [Shopping](/4-learning/project4/shopping) - Not done yet
     + [Nim](/4-learning/project4/nim) - Not done yet
+- [Week 5 - Neural Networks:](/5-neural-networks) - Neural Networks (activation functions, network structure, gradient descent, multilayer networks, backpropogation, overfitting, TensorFlow), Computer Vision (image convolution, convolutional neural networks), Recurrent Neural Networks
+  * [Lecture](/5-neural-networks/lecture) - Lecture notes 📒
+  * [Project](/5-neural-networks/project5)
+    + [Traffic](/5-neural-networks/project5/traffic) - Not done yet
+- [Week 6 - Language:](/6-language) - Language (syntax, semantics, context-free grammar, nltk library, n-grams, tokenization), Markov Models, Bag-of-Words models, Naive Bayes, Information Retrieval (tf-idf, information extraction, word net, word representation, word2vec)
+  * [Lecture](/6-language/lecture) - Lecture notes 📒
+  * [Project](/6-language/project6)
+    + [Parser](/6-language/project6/parser) - Not done yet
+    + [Questions](/6-language/project6/questions) - Not done yet

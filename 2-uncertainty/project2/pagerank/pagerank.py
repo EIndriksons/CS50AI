@@ -57,7 +57,26 @@ def transition_model(corpus, page, damping_factor):
     linked to by `page`. With probability `1 - damping_factor`, choose
     a link at random chosen from all pages in the corpus.
     """
-    raise NotImplementedError
+
+    dist = {}
+
+    # Determine link count
+    link_count = len(corpus[page])
+    
+    if link_count > 0:
+        # Calculate dist probability for all pages
+        for key in corpus:
+            dist[key] = (1 - damping_factor) / len(corpus)
+
+        # Calculate (and add) dist probability for linked pages
+        for key in corpus[page]:
+            dist[key] += damping_factor / link_count
+    else:
+        # Calculate dist probability for all pages (without damping factor)
+        for key in corpus:
+            dist[key] = 1 / len(corpus)
+
+    return dist
 
 
 def sample_pagerank(corpus, damping_factor, n):
@@ -69,8 +88,30 @@ def sample_pagerank(corpus, damping_factor, n):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
-    raise NotImplementedError
+    
+    # Initiate ranking dict
+    ranking = {}
+    for page in corpus:
+        ranking[page] = 0
 
+    # Select the first sample with equal random choice
+    sample = random.choice(list(corpus.keys()))
+
+    # Loop through all of the samples
+    for i in range(1, n):
+
+        # Calculate the new distribution based on the sample page
+        dist = transition_model(corpus, sample, damping_factor)
+
+        # Adjust the existing ranking based on the current distribution
+        for page in ranking:
+            ranking[page] = ((i - 1) * ranking[page] + dist[page]) / i
+
+        # Choose new sample but this time use the existing distributions
+        sample = random.choices(list(ranking.keys()), list(ranking.values()), k=1)[0]
+
+    return ranking
+    
 
 def iterate_pagerank(corpus, damping_factor):
     """

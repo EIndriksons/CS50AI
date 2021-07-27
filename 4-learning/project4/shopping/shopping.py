@@ -1,6 +1,8 @@
 import csv
 import sys
 
+import pandas as pd
+import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import confusion_matrix
@@ -61,39 +63,26 @@ def load_data(filename):
     is 1 if Revenue is true, and 0 otherwise.
     """
 
-    evidence, labels = [], []
-    monthToNum = {
+    # Using pandas read the csv file
+    df = pd.read_csv(filename)
+
+    # Because pandas already assigns integers and floating point values
+    # We only need to parse text and boolean values
+    df['Month'] = df['Month'].map({
         'Jan': 0, 'Feb': 1, 'Mar': 2,
         'Apr': 3, 'May': 4, 'June': 5,
         'Jul': 6, 'Aug': 7, 'Sep': 8,
         'Oct': 9, 'Nov': 10, 'Dec': 11
-    }
+    })
+    df['VisitorType'] = np.where(df['VisitorType'] == 'Returning_Visitor', 1, 0)
+    df['Weekend'] = np.where(df['Weekend'] == True, 1, 0)
+    df['Revenue'] = np.where(df['Revenue'] == True, 1, 0)
 
-    with open(filename, newline='') as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            evidence.append([
-                int(row['Administrative']),
-                float(row['Administrative_Duration']),
-                int(row['Informational']),
-                float(row['Informational_Duration']),
-                int(row['ProductRelated']),
-                float(row['ProductRelated_Duration']),
-                float(row['BounceRates']),
-                float(row['ExitRates']),
-                float(row['PageValues']),
-                float(row['SpecialDay']),
-                monthToNum[row['Month']],
-                int(row['OperatingSystems']),
-                int(row['Browser']),
-                int(row['Region']),
-                int(row['TrafficType']),
-                1 if row['VisitorType'] == 'Returning_Visitor' else 0,
-                1 if row['Weekend'] == 'TRUE' else 0
-            ])
-            labels.append(1 if row['Revenue'] == 'TRUE' else 0)
+    # X - evidence, Y - labels
+    x = df.drop('Revenue', axis=1).values
+    y = df['Revenue'].values
 
-    return evidence, labels
+    return x, y
 
 
 def train_model(evidence, labels):
@@ -102,6 +91,7 @@ def train_model(evidence, labels):
     fitted k-nearest neighbor model (k=1) trained on the data.
     """
 
+    # Create and train (fit) model
     model = KNeighborsClassifier(n_neighbors=1)
     model.fit(evidence, labels)
     return model
@@ -123,6 +113,7 @@ def evaluate(labels, predictions):
     actual negative labels that were accurately identified.
     """
 
+    # Use confusion_matrix to calculate sensitivity and specificity
     tn, fp, fn, tp = confusion_matrix(labels, predictions).ravel()
     sensitivity = tp / (tp + fn)
     specificity = tn / (tn + fp)
